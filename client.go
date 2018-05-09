@@ -126,11 +126,12 @@ func (c *Client) request(stream string) (*http.Response, error) {
 		return nil, err
 	}
 
-	// Setup request, specify stream to connect to
-	query := req.URL.Query()
-	query.Add("stream", stream)
-	req.URL.RawQuery = query.Encode()
-
+	if len(stream) > 0 {
+		// Setup request, specify stream to connect to
+		query := req.URL.Query()
+		query.Add("stream", stream)
+		req.URL.RawQuery = query.Encode()
+	}
 	req.Header.Set("Cache-Control", "no-cache")
 	req.Header.Set("Accept", "text/event-stream")
 	req.Header.Set("Connection", "keep-alive")
